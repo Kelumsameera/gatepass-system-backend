@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: "customer",
+    default: "employee",
   },
   isBlocked: {
     type: Boolean,

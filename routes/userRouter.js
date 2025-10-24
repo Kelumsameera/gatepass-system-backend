@@ -1,15 +1,10 @@
-import express from "express";
-import {
-  createUser,
-  loginUser,
-  getProfile,
-} from "../controllers/userController.js";
-import { verifyToken } from "../middleware/authMiddleware.js";
+import express from "express"
+import { createUser, loginUser } from "../controllers/userController.js"
 
-const router = express.Router();
+const userRouter = express.Router()
 
-router.post("/", createUser); // register
-router.post("/login", loginUser); // login
-router.get("/profile", verifyToken, getProfile); // protected route
+userRouter.post("/",createUser)
+userRouter.post("/login",loginUser)
 
-export default router;
+
+export default userRouter
