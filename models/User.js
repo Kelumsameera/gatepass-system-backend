@@ -28,12 +28,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  department: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
   },
   role: {
     type: String,
+    enum: ["admin", "executive", "manager", "employee"],
     default: "employee",
   },
   isBlocked: {
@@ -46,11 +51,9 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
     default: "/default.jpg",
   },
 });
 
 const User = mongoose.model("User", userSchema);
-
 export default User;

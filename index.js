@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/userRouter.js";
 import jwt from "jsonwebtoken";
+import gatepassRouter from "./routes/gatepassRouter.js";
 
 import cors from "cors";
 import dotenv from "dotenv";
@@ -44,7 +45,14 @@ app.use((req, res, next) => {
   }
 });
 
+app.use((req, res, next) => {
+  console.log("👉 Incoming request:", req.method, req.url);
+  next();
+});
+
+
 app.use("/api/users", userRouter);
+app.use("/api/gatepass", gatepassRouter);
 
 
 app.listen(3000, () => {
