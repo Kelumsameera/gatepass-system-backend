@@ -31,7 +31,7 @@ Do not commit real passwords, connection strings containing credentials, or JWT 
 | PUT | `/api/gatepass/:id/approve/executive` | Add executive approval |
 | PUT | `/api/gatepass/:id/approve/manager` | Add manager approval after an executive approval |
 
-For protected requests, clients are intended to send `Authorization: Bearer <token>`, but **the current gate-pass routes do not enforce authentication or role permissions**. Do not assume an endpoint is protected just because a JWT is supported.
+Gate-pass creation now requires a verified Bearer token. Executive/manager approvals require the corresponding JWT role (or admin). This is only the initial access-control layer; see the security work below.
 
 ## Data model
 
@@ -41,11 +41,10 @@ Possible statuses: `Pending`, `ExecutiveApproved`, `FullyApproved`, `Rejected`. 
 
 ## Security work needed
 
-- Require verified authentication for gate-pass creation and both approval endpoints.
-- Enforce server-side executive/manager role permissions and prevent self-approval where applicable.
-- Do not allow public registration to choose privileged roles.
-- Do not return password hashes in registration responses.
-- Validate request bodies and state transitions; prevent duplicate approvals.
+- Verify the existing JWT authentication and executive/manager role permissions with end-to-end tests.
+- Review the proposed self-approval, approval identity and duplicate-prevention fixes in [PR #2](https://github.com/Kelumsameera/gatepass-system-backend/pull/2), which are not yet considered production-validated.
+- Public registration is restricted to employee accounts and omits password hashes from its response; test these invariants.
+- Validate request bodies and enforce correct approval state transitions, including concurrent updates.
 - Restrict CORS to approved frontend origins, introduce rate limits, and make runtime settings configurable.
 - Add automated tests covering unauthorized access, role escalation and approval order.
 
