@@ -44,11 +44,21 @@ export async function createUser(req, res) {
       address: data.address,
       department: data.department,
       password: hashedPassword,
-      role: data.role || "employee",
+      role: "employee",
     });
 
     await user.save();
-    res.status(201).json({ message: "User registered successfully", user });
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        employeeId: user.employeeId,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "User creation failed", error: error.message });
